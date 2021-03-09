@@ -1,54 +1,69 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-import { Input, Buttons } from "../components";
+import { Input, Buttons, Header } from "../components";
 import {
   ButtonDiv,
   Container,
   DivForm,
   Form,
   InputDiv,
-} from "../styles/pages/stylesToEdit";
+  FormContainer,
+  ButtonDivBack,
+} from "../styles/pages/stylesPages";
 
-export default function ToEdit() {
+export default function ToAdd() {
   let history = useHistory();
-  const hadleLogin = () => {
+  const hadleBackHome = () => {
     history.push("/home");
   };
   return (
     <Container>
-      <Buttons classButton="back" name="Adicionar Naver" />
+      <Header />
+      
+      <ButtonDivBack>
+          <Buttons
+            type="button"
+            classButton="back"
+            name="Editar Naver"
+            hadleClick={hadleBackHome}
+          />
+        </ButtonDivBack>
 
-      <DivForm>
-        {/* <Form>
-          <>
+      <Form>
+        <DivForm>
+          <FormContainer>
             <InputDiv>
-              <Input name="E-mail" type="text" />
+              <Input name="Nome" type="text" />
             </InputDiv>
             <InputDiv>
-              <Input name="Senha" type="password" />
+              <Input name="Idade" type="number" />
             </InputDiv>
             <InputDiv>
-              <Input name="Senha" type="password" />
+              <Input name="Projetos que participou" type="tex" />
             </InputDiv>
-          </>
-          <>
-            <InputDiv>
-              <Input name="Senha" type="password" />
-            </InputDiv>
-            <InputDiv>
-              <Input name="Senha" type="password" />
-            </InputDiv>
-            <InputDiv>
-              <Input name="Senha" type="password" />
-            </InputDiv>
-          </>
+          </FormContainer>
 
-          <ButtonDiv>
-            <Buttons type="button" name="Entrar" hadleClick={hadleLogin} />
-          </ButtonDiv>
-        </Form> */}
-      </DivForm>
+          <FormContainer>
+            <InputDiv>
+              <Input name="Cargo" type="text" />
+            </InputDiv>
+            <InputDiv>
+              <Input name="Tempo de empresa" type="text" />
+            </InputDiv>
+            <InputDiv>
+              <Input name="URL da foto do naver" type="text" />
+            </InputDiv>
+          </FormContainer>
+        </DivForm>
+        
+        <ButtonDiv>
+          <Buttons
+            type="submit"
+            name="Salvar"
+          />
+        </ButtonDiv>
+      </Form>
     </Container>
   );
 }

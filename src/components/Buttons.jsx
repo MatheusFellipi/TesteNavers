@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowBackIosOutlined } from "@material-ui/icons";
 
-import { Button, ButtonBack, Text } from "../styles/components/stylesButtons";
+import { Button, ButtonBack, Text,Span } from "../styles/components/stylesButtons";
 
 export default function Buttons({ name, type, hadleClick, classButton }) {
   return (
@@ -9,7 +9,7 @@ export default function Buttons({ name, type, hadleClick, classButton }) {
       {classButton === "back" ? (
         <ButtonBack type={type} onClick={hadleClick}>
           <Text>
-          <span><ArrowBackIosOutlined /></span>
+          <Span><ArrowBackIosOutlined /></Span>
             {name}
           </Text>
         </ButtonBack>
