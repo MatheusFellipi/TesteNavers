@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import { TokenContext } from "../context/TokenContext";
+import api from "../services/api";
+
 import { Input, Buttons } from "../components";
 import { useHistory } from "react-router-dom";
 
-import api from "../services/api";
 import navarsIconBlack from "../assets/img/logo-black.png";
 import {
   Container,
@@ -14,24 +17,38 @@ import {
 } from "../styles/pages/stylesLogin";
 
 export default function Login() {
+  const { setToken } = useContext(TokenContext);
+
   let history = useHistory();
 
-  const [data, setData] = useState("");
-  const [form, setForm] = useState({
-    email:"",
-    password:"",
+  const [data, setData] = useState([]);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   });
 
-  // api
-  //   .post("https://navedex-api.herokuapp.com/v1/users/login", {
-  //     email: "matheus-user@nave.rs",
-  //     password: "nave1234",
-  //   })
-  //   .then(({ data }) => {
-  //     setData(data);
-  //   });
-
-  const hadleLogin = () => {};
+  const hadleLogin = async () => {
+    if (formData.email && formData.password) {
+     await api
+        .post("users/login", {
+          email: formData.email,
+          password: formData.password,
+        })
+        .then(({ data }) => {
+          setData(data);
+        })
+        .catch((error) => {
+          console.log("Usuario nao existe ou dado Incorreto");
+        });
+    } else if (formData.email === "" || formData.password === "") {
+      alert("entre com os dados");
+    }
+    if (data) {
+      setToken(data.token);
+      history.push("/home")
+    }
+    
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,20 +58,20 @@ export default function Login() {
     let name = e.target.name;
     let value = e.target.value;
 
-    if (name ==="E-mail") {
-      setForm(prevState => {
-        return { ...prevState, email: value }
-      })
+    if (name === "E-mail") {
+      setFormData((prevState) => {
+        return { ...prevState, email: value };
+      });
     }
 
-    if (name ==="Senha") {
-      setForm(prevState => {
-        return { ...prevState, password: value }
-      })
+    if (name === "Senha") {
+      setFormData((prevState) => {
+        return { ...prevState, password: value };
+      });
     }
-    
   };
-  console.log(form);
+
+  console.log(formData);
 
   return (
     <Container>
@@ -62,7 +79,6 @@ export default function Login() {
         <ImgNavers src={navarsIconBlack} alt="logo navars" />
 
         <Form onSubmit={handleSubmit}>
-
           <InputDiv>
             <Input name="E-mail" type="text" handleChange={handleChange} />
           </InputDiv>
@@ -73,7 +89,6 @@ export default function Login() {
           <ButtonDiv>
             <Buttons type="button" name="Entrar" hadleClick={hadleLogin} />
           </ButtonDiv>
-
         </Form>
       </DivForm>
     </Container>
