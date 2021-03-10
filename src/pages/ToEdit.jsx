@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import { useHistory } from "react-router-dom";
 
 import { Input, Buttons, Header } from "../components";
@@ -14,21 +14,23 @@ import {
 
 export default function ToAdd() {
   let history = useHistory();
+  const { handleEditar, handleDelete, dataDelete } = useContext(DataContext);
+
   const hadleBackHome = () => {
     history.push("/home");
   };
   return (
     <Container>
       <Header />
-      
+
       <ButtonDivBack>
-          <Buttons
-            type="button"
-            classButton="back"
-            name="Editar Naver"
-            hadleClick={hadleBackHome}
-          />
-        </ButtonDivBack>
+        <Buttons
+          type="button"
+          classButton="back"
+          name="Editar Naver"
+          hadleClick={hadleBackHome}
+        />
+      </ButtonDivBack>
 
       <Form>
         <DivForm>
@@ -56,12 +58,9 @@ export default function ToAdd() {
             </InputDiv>
           </FormContainer>
         </DivForm>
-        
+
         <ButtonDiv>
-          <Buttons
-            type="submit"
-            name="Salvar"
-          />
+          <Buttons type="submit" name="Salvar" />
         </ButtonDiv>
       </Form>
     </Container>

@@ -17,9 +17,9 @@ import {
 } from "../styles/pages/stylesLogin";
 
 export default function Login() {
+  const history = useHistory();
   const { setToken } = useContext(TokenContext);
 
-  let history = useHistory();
 
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState({
@@ -36,6 +36,8 @@ export default function Login() {
         })
         .then(({ data }) => {
           setData(data);
+          setToken(data.token);
+          history.push("/home")
         })
         .catch((error) => {
           console.log("Usuario nao existe ou dado Incorreto");
@@ -43,11 +45,6 @@ export default function Login() {
     } else if (formData.email === "" || formData.password === "") {
       alert("entre com os dados");
     }
-    if (data) {
-      setToken(data.token);
-      history.push("/home")
-    }
-    
   };
 
   const handleSubmit = (e) => {
@@ -70,9 +67,6 @@ export default function Login() {
       });
     }
   };
-
-  console.log(formData);
-
   return (
     <Container>
       <DivForm>
@@ -80,7 +74,7 @@ export default function Login() {
 
         <Form onSubmit={handleSubmit}>
           <InputDiv>
-            <Input name="E-mail" type="text" handleChange={handleChange} />
+            <Input name="E-mail" type="text" handleChange={handleChange}/>
           </InputDiv>
           <InputDiv>
             <Input name="Senha" type="password" handleChange={handleChange} />

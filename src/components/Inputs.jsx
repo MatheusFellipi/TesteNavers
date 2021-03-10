@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Label,Input } from '../styles/components/stylesInput';
 
-export default function Inputs({name,type,handleChange}) {
+export default function Inputs({name,type,handleChange,placeholder}) {
   return (
     <>  
         <Label htmlFor={name} >
@@ -10,7 +10,7 @@ export default function Inputs({name,type,handleChange}) {
           <Input 
             type={type}
             name={name}
-            placeholder={name}
+            placeholder={placeholder}
             onChange={handleChange}
           >
           </Input>
