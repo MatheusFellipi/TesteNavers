@@ -1,21 +1,28 @@
-import React from 'react';
+import React from "react";
 
-import { Label,Input } from '../styles/components/stylesInput';
+import { Label, Input } from "../styles/components/stylesInput";
 
-export default function Inputs({name,type,handleChange,placeholder,value}) {
+export default function Inputs({
+  name,
+  type,
+  handleChange,
+  placeholder,
+  value,
+  ...rest
+}) {
   return (
-    <>  
-        <Label htmlFor={name} >
-          {name}
-          <Input 
-            type={type}
-            name={name}
-            placeholder={placeholder}
-            value={value}
-            onChange={handleChange}
-          >
-          </Input>
-        </Label>
+    <>
+      <Label htmlFor={name}>
+        {name}
+        <Input
+          {...rest}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+        ></Input>
+      </Label>
     </>
   );
 }

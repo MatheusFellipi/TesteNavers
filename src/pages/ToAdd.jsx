@@ -26,6 +26,7 @@ export default function ToAdd() {
   const [url, setUrl] = useState("");
 
   const hadleSubmit = (event) => {
+    
     api
       .post(
         "navers",
@@ -71,6 +72,7 @@ export default function ToAdd() {
                 name="Nome"
                 type="text"
                 placeholder="Nome"
+                value={name}
                 handleChange={(e) => setName(e.target.value)}
               />
             </InputDiv>

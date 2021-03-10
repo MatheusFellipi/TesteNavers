@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { DataContext } from "../context/DatasContenxt";
 import { TokenContext } from "../context/TokenContext";
 
-import api from "../services/api"
+import api from "../services/api";
 
 import { Input, Buttons, Header } from "../components";
 import {
@@ -21,14 +21,23 @@ export default function ToEdit() {
   let history = useHistory();
 
   const { AuthStr } = useContext(TokenContext);
-  const { dataDelete, dataOnly } = useContext(DataContext);
-  
+  const { dataDelete,handleDelete, dataOnly } = useContext(DataContext);
+
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [project, setProject] = useState("");
   const [jobRole, setJobRole] = useState("");
   const [admissionDate, setAdmissionDate] = useState("");
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    setAdmissionDate(dataOnly.admission_date);
+    setBirthdate(dataOnly.birthdate);
+    setJobRole(dataOnly.job_role);
+    setName(dataOnly.name);
+    setProject(dataOnly.project);
+    setUrl(dataOnly.url);
+  },[dataOnly]);
 
   const hadleSubmit = (event) => {
     api
@@ -55,7 +64,6 @@ export default function ToEdit() {
   const hadleBackHome = () => {
     history.push("/home");
   };
-  console.log(dataOnly);
   return (
     <Container>
       <Header />
@@ -76,24 +84,24 @@ export default function ToEdit() {
               <Input
                 name="Nome"
                 type="text"
-                value={dataOnly.name}
-                handleChange={() => setName}
+                value={name}
+                handleChange={(e) => setName(e.target.value)}
               />
             </InputDiv>
             <InputDiv>
               <Input
                 name="Idade"
                 type="text"
-                value={dataOnly.birthdate}
-                handleChange={() => setBirthdate}
+                value={birthdate}
+                handleChange={(e) => setBirthdate(e.target.value)}
               />
             </InputDiv>
             <InputDiv>
               <Input
                 name="Projetos que participou"
                 type="tex"
-                value={dataOnly.project}
-                handleChange={() => setProject}
+                value={project}
+                handleChange={(e) => setProject(e.target.value)}
               />
             </InputDiv>
           </FormContainer>
@@ -103,24 +111,24 @@ export default function ToEdit() {
               <Input
                 name="Cargo"
                 type="text"
-                value={dataOnly.job_role}
-                handleChange={() => setJobRole}
+                value={jobRole}
+                handleChange={(e) => setJobRole(e.target.value)}
               />
             </InputDiv>
             <InputDiv>
               <Input
                 name="Tempo de empresa"
                 type="text"
-                value={dataOnly.admission_date}
-                handleChange={() => setAdmissionDate}
+                value={admissionDate}
+                handleChange={(e) => setAdmissionDate(e.target.value)}
               />
             </InputDiv>
             <InputDiv>
               <Input
                 name="URL da foto do naver"
                 type="text"
-                value={dataOnly.url}
-                handleChange={() => setUrl}
+                value={url}
+                handleChange={(e) => setUrl(e.target.value)}
               />
             </InputDiv>
           </FormContainer>
@@ -130,6 +138,16 @@ export default function ToEdit() {
           <Buttons type="submit" name="Salvar" />
         </ButtonDiv>
       </Form>
+     
+            <button
+              className="delete"
+              onClick={() => {
+                history.push("/home");
+                handleDelete(dataOnly.id);
+              }}
+            >
+              delete
+            </button>
     </Container>
   );
 }
