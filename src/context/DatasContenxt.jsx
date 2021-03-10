@@ -1,17 +1,17 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import { TokenContext } from "./TokenContext";
 import api from "../services/api";
 export const DataContext = createContext({});
 
 export function DataContextProvider({ children }) {
+
   const { AuthStr } = useContext(TokenContext);
 
   const [dataOnly, setDataOnly] = useState([]);
   const [dataDelete, setDateDelete] = useState([]);
 
-
-  const handleEditar = (id) => {
-    api
+  const handleEditar = async(id) => {
+    await api
       .get(`navers/${id}`, { headers: { Authorization: AuthStr } })
       .then((data) => {
         setDataOnly(data.data);
@@ -20,10 +20,11 @@ export function DataContextProvider({ children }) {
       .catch((error) => {
         console.log(error);
       });
+
   };
 
-  const handleDelete = (id) => {
-    api
+  const handleDelete = async(id) => {
+    await api
       .delete(`navers/${id}`, { headers: { Authorization: AuthStr } })
       .then((data) => {
         setDateDelete(data);
@@ -34,7 +35,9 @@ export function DataContextProvider({ children }) {
   };
 
   return (
-    <DataContext.Provider value={{ handleEditar, handleDelete,dataDelete,dataOnly,dataDelete }}>
+    <DataContext.Provider
+      value={{ handleEditar, handleDelete, dataDelete, dataOnly,dataDelete }}
+    >
       {children}
     </DataContext.Provider>
   );

@@ -17,10 +17,11 @@ function Home() {
   const history = useHistory();
   const { AuthStr } = useContext(TokenContext);
 
-  const { handleEditar,handleDelete,dataDelete } = useContext(DataContext);
+  const { handleEditar, handleDelete, dataDelete, seId } = useContext(
+    DataContext
+  );
 
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     api
@@ -31,10 +32,8 @@ function Home() {
       .catch((error) => {
         console.log("Unauthorized");
       });
-      console.log("oi");
-  },[dataDelete]);
-
- 
+    console.log("oi");
+  }, [dataDelete]);
 
   const hadleToAdd = () => {
     history.push("/toadd");
@@ -72,6 +71,7 @@ function Home() {
             <button
               className="edit"
               onClick={() => {
+                history.push("/toedit");
                 handleEditar(data.id);
               }}
             >
