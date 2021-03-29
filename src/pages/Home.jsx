@@ -2,27 +2,42 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { TokenContext } from "../context/TokenContext";
 import { DataContext } from "../context/DatasContenxt";
+
+
 import api from "../services/api";
 
-import { Header, Buttons } from "../components";
+import {
+  Header,
+  Buttons,
+  Details,
+  ButtonsEditDelete,
+  ModalFeedBackDelete,
+} from "../components";
+
 import {
   Container,
   ContainerNavers,
   HeaderNavers,
   Text,
   ButtonDiv,
+  CardNavers,
+  CardNaversSpan,
+  CardNaversText,
+  ButtonDivCard,
+  ImgNavers,
 } from "../styles/pages/stylesHome";
 
 function Home() {
   const history = useHistory();
   const { AuthStr } = useContext(TokenContext);
 
-  const { handleEditar, handleDelete, dataDelete, seId } = useContext(
-    DataContext
-  );
+  const { handleDataOnly, dataDelete } = useContext(DataContext);
 
   const [data, setData] = useState([]);
 
+  const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  
   useEffect(() => {
     api
       .get("navers", { headers: { Authorization: AuthStr } })
@@ -32,11 +47,20 @@ function Home() {
       .catch((error) => {
         console.log("Unauthorized");
       });
-    console.log("oi");
   }, [dataDelete]);
 
   const hadleToAdd = () => {
     history.push("/toadd");
+  };
+
+  const handleShow = (id) => {
+    console.log(id);
+    handleDataOnly(id);
+    setShow(true);
+  };
+  const handleClose = () => {
+    setShowDelete(false);
+    setShow(false);
   };
 
   return (
@@ -57,37 +81,40 @@ function Home() {
 
       <ContainerNavers>
         {data.map((data) => (
-          <div key={data.id}>
-            <div>
-              <img
-                src="https://avatars.githubusercontent.com/u/47674343?s=400&u=8703692d0c023951227d596c89217f761a7bcc3f&v=4"
-                alt={data.name}
-              />
+          <CardNavers key={data.id}>
+            <div onClick={() => handleShow(data.id)}>
+              <ImgNavers src={data.url} alt={data.name} />
               <div>
-                <p>{data.name}</p>
-                <p>{data.job_role}</p>
+                <CardNaversText>{data.name}</CardNaversText>
+                <CardNaversSpan>{data.job_role}</CardNaversSpan>
               </div>
             </div>
-            <button
-              className="edit"
-              onClick={() => {
-                history.push("/toedit");
-                handleEditar(data.id);
-              }}
-            >
-              editar
-            </button>
-            <button
-              className="delete"
-              onClick={() => {
-                handleDelete(data.id);
-              }}
-            >
-              delete
-            </button>
-          </div>
+            <ButtonDiv>
+              <ButtonDivCard>
+                <ButtonsEditDelete
+                  classButton="delete"
+                  hadleClick={() => {
+                    handleDataOnly(data.id);
+                    setShowDelete(true);
+                  }}
+                />
+              </ButtonDivCard>
+
+              <ButtonDivCard>
+                <ButtonsEditDelete
+                  classButton="edit"
+                  hadleClick={() => {
+                    history.push("/toedit");
+                    handleDataOnly(data.id);
+                  }}
+                />
+              </ButtonDivCard>
+            </ButtonDiv>
+          </CardNavers>
         ))}
       </ContainerNavers>
+      <ModalFeedBackDelete show={showDelete} handleClose={handleClose} />
+      <Details show={show} handleClose={handleClose} />
     </Container>
   );
 }

@@ -8,14 +8,13 @@ export default function Inputs({
   handleChange,
   placeholder,
   value,
-  ...rest
+ 
 }) {
   return (
     <>
       <Label htmlFor={name}>
         {name}
         <Input
-          {...rest}
           type={type}
           name={name}
           placeholder={placeholder}

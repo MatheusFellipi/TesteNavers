@@ -1,29 +1,30 @@
 import { createContext, useState, useContext } from "react";
 import { TokenContext } from "./TokenContext";
 import api from "../services/api";
+import { useHistory } from "react-router";
+
 export const DataContext = createContext({});
 
 export function DataContextProvider({ children }) {
+  const history = useHistory(); 
 
   const { AuthStr } = useContext(TokenContext);
 
   const [dataOnly, setDataOnly] = useState([]);
   const [dataDelete, setDateDelete] = useState([]);
 
-  const handleEditar = async(id) => {
+  const handleDataOnly = async (id) => {
     await api
       .get(`navers/${id}`, { headers: { Authorization: AuthStr } })
       .then((data) => {
         setDataOnly(data.data);
-        console.log(data.data);
       })
       .catch((error) => {
         console.log(error);
       });
-
   };
 
-  const handleDelete = async(id) => {
+  const handleDelete = async (id) => {
     await api
       .delete(`navers/${id}`, { headers: { Authorization: AuthStr } })
       .then((data) => {
@@ -34,9 +35,15 @@ export function DataContextProvider({ children }) {
       });
   };
 
+  const isToken = () => {
+    if (AuthStr === " " ) {
+      history.push('/');
+    }
+  };
+
   return (
     <DataContext.Provider
-      value={{ handleEditar, handleDelete, dataDelete, dataOnly,dataDelete }}
+      value={{ handleDataOnly, handleDelete, dataDelete, dataOnly, dataDelete,isToken }}
     >
       {children}
     </DataContext.Provider>

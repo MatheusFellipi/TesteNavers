@@ -1,3 +1,7 @@
 export {default as Header} from './Header'
 export {default as Buttons} from './Buttons'
+export {default as ButtonsEditDelete} from './ButtonsEditDelete'
 export {default as Input} from './Inputs'
+export {default as Details} from './Modal'
+export {default as ModalFeedBack} from './ModalFeedBack'
+export {default as ModalFeedBackDelete} from './ModalFeedBackDelete'

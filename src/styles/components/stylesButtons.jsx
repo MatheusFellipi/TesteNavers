@@ -34,7 +34,8 @@ export const Span = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 1rem;
+  
+    
 `;
 
 export const ButtonBack = styled.button`
@@ -58,3 +59,22 @@ export const ButtonBack = styled.button`
     border-bottom:solid 1px;
   }
 `;
+
+
+export const ButtonEdit = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  font-weight: 400;
+  background-color: transparent;
+  color: #000;
+
+  height: 100%;
+  width: 100%;
+
+  border: 0;
+
+`;
+

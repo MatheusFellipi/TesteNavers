@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { TokenContext } from "../context/TokenContext";
 import { useHistory } from "react-router-dom";
 
-import { Input, Buttons, Header } from "../components";
+import { Input, Buttons, Header, ModalFeedBack } from "../components";
 import {
   ButtonDiv,
   Container,
@@ -15,8 +15,14 @@ import {
 import api from "../services/api";
 
 export default function ToAdd() {
+
+
   let history = useHistory();
-  const { AuthStr } = useContext(TokenContext);
+  const { AuthStr, isToken } = useContext(TokenContext);
+
+  const [showFeedBack, setShowFeedBack] = useState(false);
+  const [IsError, setIsError] = useState();
+  const handleClose = () => setShowFeedBack(false);
 
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -26,7 +32,6 @@ export default function ToAdd() {
   const [url, setUrl] = useState("");
 
   const hadleSubmit = (event) => {
-    
     api
       .post(
         "navers",
@@ -40,17 +45,22 @@ export default function ToAdd() {
         },
         { headers: { Authorization: AuthStr } }
       )
-      .then(alert("cadastro realizado com sucesso"))
+      .then((data) => {
+        setShowFeedBack(true);
+        setIsError(false);
+      })
       .catch((error) => {
+        setShowFeedBack(true);
+        setIsError(true);
         console.log(error);
       });
-
     event.preventDefault();
   };
-  console.log(admissionDate);
+
   const hadleBackHome = () => {
     history.push("/home");
   };
+
   return (
     <Container>
       <Header />
@@ -89,7 +99,6 @@ export default function ToAdd() {
                 name="Projetos que participou"
                 type="text"
                 placeholder="Projetos que participou"
-
                 handleChange={(e) => setProject(e.target.value)}
               />
             </InputDiv>
@@ -127,6 +136,20 @@ export default function ToAdd() {
           <Buttons type="submit" name="Salvar" hadleClick={hadleSubmit} />
         </ButtonDiv>
       </Form>
+      {IsError ? (
+        <ModalFeedBack
+          show={showFeedBack}
+          handleClose={handleClose}
+          textSub="Nao e possivel criar um naver"
+        />
+      ) : (
+        <ModalFeedBack
+          show={showFeedBack}
+          handleClose={handleClose}
+          text="Naver criado"
+          textSub="Naver criado com sucesso!"
+        />
+      )}
     </Container>
   );
 }

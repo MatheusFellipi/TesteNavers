@@ -55,11 +55,11 @@ export const ButtonDivBack = styled.div`
     width: 266px;
     height: 40px;
     margin: 2rem 1rem -2rem 18rem;
-
   }
 `;
 
 export const ButtonDiv = styled.div`
+  display: flex;
   width: 266px;
   height: 40px;
   margin: 2rem 0 0 2.4rem;
@@ -68,5 +68,17 @@ export const ButtonDiv = styled.div`
     width: 266px;
     height: 40px;
     margin: 2rem 0 0 33rem;
+  }
+`;
+export const ButtonDivDelete = styled.div`
+  margin: -39px 0% 0% 55%;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  @media (max-width: 600px) {
+    margin: -39px 0% 0% 30%;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
   }
 `;

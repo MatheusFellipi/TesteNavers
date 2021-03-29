@@ -6,7 +6,14 @@ import { TokenContext } from "../context/TokenContext";
 
 import api from "../services/api";
 
-import { Input, Buttons, Header } from "../components";
+import {
+  Input,
+  Buttons,
+  Header,
+  ButtonsEditDelete,
+  ModalFeedBack,
+  ModalFeedBackDelete,
+} from "../components";
 import {
   ButtonDiv,
   Container,
@@ -15,13 +22,16 @@ import {
   InputDiv,
   FormContainer,
   ButtonDivBack,
+  ButtonDivDelete,
 } from "../styles/pages/stylesPages";
 
 export default function ToEdit() {
   let history = useHistory();
 
   const { AuthStr } = useContext(TokenContext);
-  const { dataDelete,handleDelete, dataOnly } = useContext(DataContext);
+  const { dataOnly } = useContext(
+    DataContext
+  );
 
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -30,6 +40,16 @@ export default function ToEdit() {
   const [admissionDate, setAdmissionDate] = useState("");
   const [url, setUrl] = useState("");
 
+  const [showFeedBack, setShowFeedBack] = useState(false);
+  const [IsError, setIsError] = useState();
+  const [showDelete, setShowDelete] = useState(false);
+
+  
+  const handleClose = () => {
+    setShowDelete(false);
+    setShowFeedBack(false);
+  };
+
   useEffect(() => {
     setAdmissionDate(dataOnly.admission_date);
     setBirthdate(dataOnly.birthdate);
@@ -37,7 +57,7 @@ export default function ToEdit() {
     setName(dataOnly.name);
     setProject(dataOnly.project);
     setUrl(dataOnly.url);
-  },[dataOnly]);
+  }, [dataOnly]);
 
   const hadleSubmit = (event) => {
     api
@@ -53,8 +73,13 @@ export default function ToEdit() {
         },
         { headers: { Authorization: AuthStr } }
       )
-      .then(alert("cadastro realizado com sucesso"))
+      .then(() => {
+        setShowFeedBack(true);
+        setIsError(false);
+      })
       .catch((error) => {
+        setShowFeedBack(true);
+        setIsError(true);
         console.log(error);
       });
 
@@ -135,19 +160,34 @@ export default function ToEdit() {
         </DivForm>
 
         <ButtonDiv>
-          <Buttons type="submit" name="Salvar" />
+          <Buttons type="submit" name="Salvar" hadleClick={hadleSubmit} />
         </ButtonDiv>
       </Form>
-     
-            <button
-              className="delete"
-              onClick={() => {
-                history.push("/home");
-                handleDelete(dataOnly.id);
-              }}
-            >
-              delete
-            </button>
+      <ButtonDivDelete>
+        <ButtonsEditDelete
+          type="button"
+          classButton="delete"
+          hadleClick={() => {
+            setShowDelete(true);
+          }}
+        />
+      </ButtonDivDelete>
+
+      {IsError ? (
+        <ModalFeedBack
+          show={showFeedBack}
+          handleClose={handleClose}
+          textSub="Nao e possivel criar um naver"
+        />
+      ) : (
+        <ModalFeedBack
+          show={showFeedBack}
+          handleClose={handleClose}
+          text="Naver atualizado"
+          textSub="Naver atualizado com sucesso!"
+        />
+      )}
+      <ModalFeedBackDelete show={showDelete} handleClose={handleClose} />
     </Container>
   );
 }
